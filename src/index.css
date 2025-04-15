@@ -1,0 +1,25 @@
+/* ✅ Tailwind 기본 스타일 적용 */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ✅ 기존 CSS 유지 */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ✅ Tailwind를 활용한 기본 배경 및 텍스트 색상 추가 */
+body {
+  @apply bg-gray-100 text-gray-900;
+}
+
+/* ✅ 기존 코드 스타일 유지 */
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
