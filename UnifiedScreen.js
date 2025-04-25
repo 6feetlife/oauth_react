@@ -47,6 +47,8 @@ const UnifiedScreen = () => {
 
   const [updateTitle, setUpdateTitle] = useState("");
 
+  const [audioFile, setAudioFile] = useState(null);
+
   const redirectUri = 'http://localhost:3000/';
   const clientId = '773818071350-h3rpem6pdgl9npaik5kecgt4svapqu77.apps.googleusercontent.com';
   console.log("✅ [DEBUG] Google Client ID:", clientId);
@@ -99,7 +101,7 @@ const UnifiedScreen = () => {
   };
 
   const handleLoginAndNavigate = async () => {
-    await handleSignup("oauth/login", "POST", loginData);
+    await handleSignup("auth/login", "POST", loginData);
   };
 
   const handleFileChange = (event) => {
@@ -270,6 +272,27 @@ const UnifiedScreen = () => {
     }
   };
 
+  const handleUploadAudio = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      const formData = new FormData();
+      formData.append('audio', audioFile);
+
+      const response = await axios.post('http://localhost:8080/audio-records', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      console.log('Audio upload response:', response.data);
+      alert('Audio uploaded successfully!');
+    } catch (error) {
+      console.error('Failed to upload audio:', error);
+      alert('Failed to upload audio.');
+    }
+  };
+
   const inputStyle = "w-full h-12 border border-gray-300 rounded-lg px-4 text-gray-700 placeholder-gray-400 focus:border-pink-500 focus:ring-1 focus:ring-pink-500";
   const labelStyle = "text-gray-400 text-sm text-left";
 
@@ -415,6 +438,12 @@ const UnifiedScreen = () => {
         <div className="flex flex-col gap-4">
           <h2 className="text-xl font-bold">Today's Schedule</h2>
           <button type="button" onClick={handleGetTodaySchedule} className="w-full h-12 bg-blue-500 text-white font-bold rounded-lg">당일 일정 조회</button>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <h2 className="text-xl font-bold">Upload Audio</h2>
+          <input type="file" accept="audio/*" onChange={(e) => setAudioFile(e.target.files[0])} className="p-2 border border-gray-300 rounded-md" />
+          <button type="button" onClick={handleUploadAudio} className="w-full h-12 bg-purple-500 text-white font-bold rounded-lg">Upload Audio</button>
         </div>
       </div>
       <SpeechComponent />
